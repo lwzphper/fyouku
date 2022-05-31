@@ -42,13 +42,12 @@ func ExistUserMobile(mobile string) bool {
 // UserSave 保存用户
 func UserSave(mobile string, password string) error {
 	o := orm.NewOrm()
-	user := User{
-		Name:     "",
-		Mobile:   mobile,
-		Password: password,
-		Status:   1,
-		AddTime:  time.Now().Unix(),
-	}
+	user := new(User)
+	user.Name = ""
+	user.Mobile = mobile
+	user.Password = password
+	user.Status = 1
+	user.AddTime = time.Now().Unix()
 	_, err := o.Insert(user)
 	return err
 }
