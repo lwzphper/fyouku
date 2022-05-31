@@ -4,13 +4,12 @@ import (
 	"fmt"
 	_ "fyouku/routers"
 	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/config"
 	beego "github.com/beego/beego/v2/server/web"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	defaultDb, _ := config.String("defaultdb")
+	defaultDb, _ := beego.AppConfig.String("defaultdb")
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.Debug = true
 	// 参数4(可选)  设置最大空闲连接
