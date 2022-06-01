@@ -103,3 +103,16 @@ func GetUserVideo(uid int) (num int64, videos []VideoData, err error) {
 	num, err = o.Raw("SELECT id,title,sub_title,img,img1,add_time,episodes_count, is_end FROM video WHERE user_id=? ORDER BY add_time DESC", uid).QueryRows(&videos)
 	return
 }
+
+func GetVideoInfo(videoId int) (video Video,err error) {
+	o := orm.NewOrm()
+	err = o.Raw("SELECT * FROM video WHERE id=? LIMIT 1", videoId).QueryRow(&video)
+	return
+}
+
+// GetVideoEpisodesList 获取视频剧集列表
+func GetVideoEpisodesList(videoId int) (num int64, episodes []Episodes, err error) {
+	o := orm.NewOrm()
+	num, err = o.Raw("SELECT id,title,add_time,num,play_url,comment FROM video_episodes WHERE video_id=? order by num asc", videoId).QueryRows(&episodes)
+	return
+}

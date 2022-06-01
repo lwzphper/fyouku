@@ -156,13 +156,37 @@ func (v *VideoController) UserVideo() {
 // VideoInfo 获取视频详情
 // @router /video/info [*]
 func (v *VideoController) VideoInfo() {
-
+	videoId, _ := v.GetInt("videoId")
+	if videoId == 0 {
+		v.Data["json"] = ReturnError(4001, "必须指定视频ID")
+		v.ServeJSON()
+	}
+	video, err := models.GetVideoInfo(videoId)
+	if err == nil {
+		v.Data["json"] = ReturnSuccess(0, "success", video, 1)
+		v.ServeJSON()
+	} else {
+		v.Data["json"] = ReturnError(4004, "请求数据失败，请稍后重试~")
+		v.ServeJSON()
+	}
 }
 
 // VideoEpisodesList 获取视频剧集列表
 // @router /video/episodes/list [*]
 func (v *VideoController) VideoEpisodesList() {
-
+	videoId, _ := v.GetInt("videoId")
+	if videoId == 0 {
+		v.Data["json"] = ReturnError(4001, "必须指定视频ID")
+		v.ServeJSON()
+	}
+	num, episodes, err := models.GetVideoEpisodesList(videoId)
+	if err == nil {
+		v.Data["json"] = ReturnSuccess(0, "success", episodes, num)
+		v.ServeJSON()
+	} else {
+		v.Data["json"] = ReturnError(4004, "请求数据失败，请稍后重试~")
+		v.ServeJSON()
+	}
 }
 
 // VideoSave 保存用户上传视频信息
